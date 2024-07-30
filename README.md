@@ -12,7 +12,7 @@
             "days": [
                 {
                     "title": "Day-1",
-                    "day": "DD-MM-YYYY",
+                    "day": "YYYY-MM-DD",
                     "stops": [
                         {
                             "title": "Stop-1",
@@ -55,13 +55,13 @@
 | Metodo             | Parametri                                                                                                                                                                          | Restituisce     |
 |--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
 | **createProfile**  | null                                                                                                                                                                               | `profileID`     |
-| **createTrip**     | `profileID`, `name` (opzionale, string), `days` (opzionale, string)                                                                                                                | `tripID`        |
-| **createDay**      | `profileID`, `tripID`, `day` (string), `title` (opzionale, string)                                                                                                                 | `day`, `dayID`  |
-| **createStop**     | `profileID`, `tripID`, `day`, `dayID`, `title` (opzionale, string), `description` (opzionale, string), `rating` (opzionale, number), `coordinates` (opzionale)                     | `stopID`        |
-| **renameTripTitle**| `profileID`, `newName` (string)                                                                                                                                                    | `info`          |
+| **createTrip**     | `profileID`,															                                                                                                              | `tripID`        |
+| **createDay**      | `profileID`, `tripID`, `day` (string)							                                                                                                                  | `day`, `dayID`  |
+| **createStop**     | `profileID`, `tripID`, `dayID`, `title`																												                 		      | `stopID`        |
+| **renameTripTitle**| `profileID`, `tripID`, `newName` (string)                                                                                                                                          | `info`          |
 | **renameDayTitle** | `profileID`, `tripID`, `dayID`, `newTitle` (string)                                                                                                                                | `info`          |
 | **changeDay**      | `profileID`, `tripID`, `dayID`, `newDay` (string)                                                                                                                                  | `info`          |
-| **changeStopInfo** | `profileID`, `tripID`, `dayID`, `stopID`, `newtitle` (opzionale, string), `newdescription` (opzionale, string), `newrating` (opzionale, number), `newcoordinates` (opzionale)      | `info`          |
+| **changeStopInfo** | `profileID`, `tripID`, `dayID`, `stopID`, `newTitle` (opzionale, string), `newDescription` (opzionale, string), `newRating` (opzionale, number), `newCoordinates` (opzionale)      | `info`          |
 | **addStopImage**   | `profileID`, `tripID`, `dayID`, `stopID`, `image` (dal form)                                                                                                                       | `imageID`       |
 | **removeStopImage**| `profileID`, `tripID`, `dayID`, `stopID`, `imageID`                                                                                                                                | `info`          |
 | **deleteStop**     | `profileID`, `tripID`, `dayID`, `stopID`                                                                                                                                           | `info`          |
