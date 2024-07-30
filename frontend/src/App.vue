@@ -1,9 +1,12 @@
 <script>
-import testApi from './components/testApi.vue';
+import Header from './components/Header.vue';
+import Main from './components/Main.vue';
+
 import { store } from './store';
 export default {
   components: {
-    testApi
+    Header,
+    Main
   },
   data() {
         return {
@@ -14,5 +17,6 @@ export default {
 </script>
 
 <template>
-    <testApi></testApi>
+    <Header></Header>
+    <Main></Main>
 </template>

@@ -1,5 +1,9 @@
 import { reactive } from "vue";
 
 export const store = reactive({
-    test: 123
+    url: 'http://localhost/backend/index.php',
+    profileID: null,
+    tripID: null,
+    profile: null,
+    dayID: null
 });
