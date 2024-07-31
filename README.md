@@ -1,5 +1,10 @@
 # Esercizio: travel-app
 
+## Introduzione
+
+`travel-app` è un'applicazione di gestione viaggi che consente agli utenti di creare profili, pianificare viaggi, aggiungere giorni e tappe, e gestire dettagli come immagini e valutazioni.
+
+
 ## Back-end
 
 ### Struttura file (database.json)
@@ -8,14 +13,14 @@
 {
     "12345": [
         {
-            "name": "Trip-1",
+            "name": "Viaggio-1",
             "days": [
                 {
-                    "title": "Day-1",
+                    "title": "Giorno-1",
                     "day": "YYYY-MM-DD",
                     "stops": [
                         {
-                            "title": "Stop-1",
+                            "title": "Tappa-1",
                             "description": null,
                             "rating": null,
                             "images": [
@@ -34,18 +39,18 @@
     ]
 }
 ```
-- profileID
-    - tripID
-        - name (string: default "Trip-x")
-        - days
-            - title (string: default "Day-x")
-            - day (string)
-            - stops
-                - title (string: default "Stop-x")
-                - description (string: o null)
-                - rating (number: da 0 a 5 o null)
-                - images (array: nome immagini o null)
-                - coordinates (array: latitudine, longitudine)
+- `profileID`: Identificatore per il profilo utente
+    - `tripID`: Identificatore per il viaggio
+        - `name`: (stringa) Nome del viaggio (default "Viaggio-x")
+        - `days`:  Array di giorni del viaggio
+            - `title`: (stringa) Titolo del giorno (default "Giorno-x")
+            - `day`: (stringa) Data del giorno
+            - `stops`: Array di fermate per il giorno
+                - `title`: (stringa) Titolo della fermata (default "Fermata-x")
+                - `description`: (stringa o null) Descrizione della fermata
+                - `rating`: (numero: da 0 a 5 o null) Valutazione della fermata
+                - `images`:  (array di stringhe o null) Array di nomi delle immagini)
+                - `coordinates`: (array di due numeri: latitudine e longitudine)
 
 ---
 
@@ -72,3 +77,19 @@
 
 
 ## Front-end
+
+Il front-end dell'applicazione è sviluppato con `Vue.js` e gestisce l'interfaccia utente per interagire con il back-end.
+
+### Componenti
+
+`Main.vue`: Il componente principale che gestisce la visualizzazione dell'interfaccia utente, inclusi i componenti per la mappa, le informazioni sui viaggi, e i dettagli delle tappe. Gestisce anche le interazioni tra i vari componenti.
+
+`Api.vue`: Gestisce le chiamate API. I metodi API sono invocati da altri componenti per eseguire operazioni come la creazione, modifica e eliminazione di dati.
+
+`Map.vue`: Mostra una mappa utilizzando la libreria Leaflet. Permette di aggiungere e rimuovere tappe, e aggiorna le coordinate delle fermate nel back-end.
+
+`Start.vue`: Visualizza un pulsante per creare un nuovo profilo e viaggio. Interagisce con il componente `Api.vue` per avviare il processo di creazione.
+
+`StopInfo.vue`: Mostra e gestisce le informazioni di una tappa selezionata. Permette di modificare dettagli come il titolo, la descrizione, e la valutazione, e di eliminarla.
+
+`TripInfo.vue`: Visualizza e gestisce le informazioni sul viaggio corrente. Consente di rinominare il viaggio, aggiungere giorni, e modificare o eliminare giorni e viaggi.
