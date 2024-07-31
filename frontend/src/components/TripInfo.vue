@@ -2,6 +2,7 @@
 import Api from './Api.vue';
 import { store } from './../store';
 export default {
+    emits: ['riRenderFn'],
     components: {
         Api
     },
@@ -24,6 +25,9 @@ export default {
         },
         setDay(dayID){
             this.store.dayID = dayID;
+            this.store.stopID = null;
+            this.$emit('riRenderFn');
+
         },
         deleteTrip(){
             this.$refs.api.deleteTrip(this.store.profileID, this.store.tripID);

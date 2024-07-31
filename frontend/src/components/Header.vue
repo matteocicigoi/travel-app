@@ -28,13 +28,16 @@ export default {
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
+                <!-- Title -->
                 <a class="navbar-brand" href="#">Travel App</a>
+                <!-- End Title -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Trips -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -47,11 +50,14 @@ export default {
                             </ul>
                         </li>
                     </ul>
+                    <!-- End Trips -->
                     <form class="d-flex" role="search" v-if="store.profileID == null">
                         <input class="form-control me-2" type="search" placeholder="id" aria-label="id" v-model="id">
                         <button class="btn btn-outline-success" type="submit" @click.prevent="getProfile">Carica</button>
                     </form>
+                    <!-- ID -->
                     <li class="profile-id" :class="{blur: blur}" @click="showBlur">{{ store.profileID }}</li>
+                    <!-- End ID -->
                 </div>
             </div>
         </nav>

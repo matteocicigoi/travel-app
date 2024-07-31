@@ -5,5 +5,7 @@ export const store = reactive({
     profileID: null,
     tripID: null,
     profile: null,
-    dayID: null
+    dayID: null,
+    stopView: false,
+    stopID: null
 });

@@ -2,6 +2,7 @@
 import { store } from './../store';
 import axios from 'axios';
 export default {
+    emits: ['addWaypoint'],
     data() {
         return {
             store
@@ -17,8 +18,6 @@ export default {
                 this.store.profileID = response.data.profileID;
                 if(trip){
                     this.createTrip(response.data.profileID);
-                }else{
-                    console.log(response.data.profileID);
                 }
             });
         },
@@ -32,7 +31,7 @@ export default {
                 this.getProfile(profileID);
             });
         },
-        getProfile(profileID, trip = true){
+        getProfile(profileID, trip = true, emit = false){
             axios.get(this.store.url, {
                 params: {
                     method: 'getProfile',
@@ -50,6 +49,9 @@ export default {
                         this.store.tripID = 0;
                     }
                 }
+                if(emit){
+                    this.$emit('addWaypoint');
+                }
             });
         },
         renameTripTitle(profileID, tripID, newName){
@@ -61,7 +63,6 @@ export default {
                     newName: newName
                 }
             }).then((response) => {
-                console.log(response);
             });
         },
         createDay(profileID, tripID, day){
@@ -86,7 +87,6 @@ export default {
                     newDay: newDay
                 }
             }).then((response) => {
-                console.log(response);
             });
         },
         renameDayTitle(profileID, tripID, dayID, newTitle){
@@ -99,7 +99,6 @@ export default {
                     newTitle: newTitle
                 }
             }).then((response) => {
-                console.log(response);
             });
         },
         createStop(profileID, tripID, dayID){
@@ -111,8 +110,7 @@ export default {
                     dayID: dayID
                 }
             }).then((response) => {
-                console.log(response);
-                this.getProfile(profileID);
+                this.getProfile(profileID, null, true);
             });
         },
         changeStopInfo(profileID, tripID, dayID, stopID, newTitle = null, newDescription = null, newRating = null, newCoordinates = null){
@@ -129,7 +127,6 @@ export default {
                     newCoordinates: newCoordinates
                 }
             }).then((response) => {
-                console.log(response);
             });
         },
         deleteDay(profileID, tripID, dayID){
@@ -141,13 +138,11 @@ export default {
                     dayID: dayID
                 }
             }).then((response) => {
-                console.log(response);
                 this.store.dayID = null;
                 this.getProfile(profileID);
             });
         },
         deleteTrip(profileID, tripID){
-            console.log(21);
             axios.get(this.store.url, {
                 params: {
                     method: 'deleteTrip',
@@ -155,10 +150,24 @@ export default {
                     tripID: tripID
                 }
             }).then((response) => {
-                console.log(response);
                 this.store.tripID = null;
                 this.store.dayID = null;
                 this.getProfile(profileID, false);
+            });
+        },
+        deleteStop(profileID, tripID, dayID, stopID){
+            axios.get(this.store.url, {
+                params: {
+                    method: 'deleteStop',
+                    profileID: profileID,
+                    tripID: tripID,
+                    dayID: dayID,
+                    stopID: stopID
+                }
+            }).then((response) => {
+                this.store.stopID = null;
+                this.store.stopView = false;
+                this.getProfile(profileID);
             });
         }
     }

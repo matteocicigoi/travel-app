@@ -1,62 +1,80 @@
 <script>
+import { store } from './../store';
 export default {
-  name: 'MapComponent',
-  data() {
-    return {
-      map: null, // Referenza alla mappa
-      routingControl: null, // Referenza al controllo del routing
-      waypoints: [ // Array iniziale di waypoints
-        L.latLng(45.46,  9.18),
-        L.latLng(45.47,  9.15),
-        L.latLng(45.46,  9.17)
-      ]
-    };
-  },
-  methods: {
-    initializeMap() {
-      // Crea la mappa e aggiungi il layer iniziale
-      this.map = L.map('map').setView([45.468, 9.186], 13);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(this.map);
-
-      // Crea il controllo di routing e aggiungi i waypoints
-      this.routingControl = L.Routing.control({
-        waypoints: this.waypoints,
-        routeWhileDragging: true,
-        addWaypoints: false // Disabilita l'aggiunta di waypoint al clic sulla mappa
-      }).addTo(this.map);
-
-      // Aggiungi un evento per aggiornare i waypoints quando vengono mossi
-      this.routingControl.on('routesfound', (e) => {
-        const newWaypoints = e.waypoints.map(waypoint => waypoint.latLng);
-        this.waypoints = newWaypoints;
-      });
+    emits: ['changeStopInfo'],
+    data() {
+        return {
+            store,
+            map: null,
+            routingControl: null,
+            waypoints: []
+        };
     },
-    addWaypoint() {
-      // Aggiungi un nuovo waypoint alla lista
-      const newWaypoint = L.latLng(51.51 + Math.random() * 0.01, -0.09 + Math.random() * 0.01);
-      this.waypoints.push(newWaypoint);
-
-      // Copia i waypoint esistenti e aggiorna i waypoints del controllo di routing
-      if (this.routingControl) {
-        this.routingControl.setWaypoints(this.waypoints.slice());
-      }
-    },
-    removeWaypoint(index) {
-      // Rimuovi il waypoint dall'array
-      if (index >= 0 && index < this.waypoints.length) {
-        this.waypoints.splice(index, 1);
-        // Aggiorna i waypoints del controllo di routing
-        if (this.routingControl) {
-          this.routingControl.setWaypoints(this.waypoints.slice());
+    created() {
+        // set waypoints
+        if(this.store.profile != null && this.store.tripID != null && this.store.dayID != null){
+            let x = this.store.profile[this.store.tripID].days[this.store.dayID].stops.length;
+            for(let i = 0; i < x; i++){
+                if(this.store.profile[this.store.tripID].days[this.store.dayID].stops[i].coordinates.length == 2){
+                    const w = this.store.profile[this.store.tripID].days[this.store.dayID].stops[i].coordinates;
+                    this.addWaypoint(w[0], w[1]);
+                }
+            }
         }
-      }
+    },
+    methods: {
+        initializeMap() {
+            this.map = L.map('map').setView([45.468, 9.186], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(this.map);
+
+            // make route
+            this.routingControl = L.Routing.control({
+                waypoints: this.waypoints,
+                routeWhileDragging: true,
+                addWaypoints: false
+            }).addTo(this.map);
+
+            // change of position
+            this.routingControl.on('routesfound', (e) => {
+                const newWaypoints = e.waypoints.map(waypoint => waypoint.latLng);
+                this.waypoints = newWaypoints;
+                const x = this.waypoints.length;
+                for(let i = 0; i < x; i++){
+                    this.store.profile[this.store.tripID].days[this.store.dayID].stops[i].coordinates = [this.waypoints[i].lat, this.waypoints[i].lng];
+                    this.$emit('changeStopInfo', i);
+                }
+            });
+        },
+
+        addWaypoint(x, y) {
+            const newWaypoint = L.latLng(x, y);
+            this.waypoints.push(newWaypoint);
+
+            // copy existing waypoints and update routing control waypoints
+            if (this.routingControl) {
+                this.routingControl.setWaypoints(this.waypoints.slice());
+            }
+            //store
+            const stopID = this.waypoints.length - 1;
+            this.store.profile[this.store.tripID].days[this.store.dayID].stops[stopID].coordinates = [this.waypoints[stopID].lat, this.waypoints[stopID].lng];
+            return stopID;
+
+        },
+        removeWaypoint(index) {
+            if (index >= 0 && index < this.waypoints.length) {
+                this.waypoints.splice(index, 1);
+
+                if (this.routingControl) {
+                    this.routingControl.setWaypoints(this.waypoints.slice());
+                }
+            }
+        }
+    },
+    mounted() {
+        this.initializeMap();
     }
-  },
-  mounted() {
-    this.initializeMap(); // Inizializza la mappa quando il componente è montato
-  }
 };
 </script>
 
