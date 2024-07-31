@@ -24,7 +24,7 @@ if(isset($_GET['method']) && $_GET['method'] == 'createTrip'){
     $data = getFile($fileName);
     $profileID = $_GET['profileID'];
     $tripID = count($data->{$profileID});
-    $data->{$profileID}[] = ["name" => "Trip-" . ($tripID + 1), "days" => []];
+    $data->{$profileID}[] = ["name" => "Viaggio-" . ($tripID + 1), "days" => []];
     saveFile($fileName, $data);
     echo json_encode(['tripID' => $tripID]);
     exit;
@@ -41,7 +41,7 @@ if(isset($_GET['method']) && $_GET['method'] == 'createDay'){
     $tripID = $_GET['tripID'];
     $day = $_GET['day'];
     $dayID = count($data->{$profileID}[$tripID]->days);
-    $data->{$profileID}[$tripID]->days[] = ["title" => "Day-" . ($dayID + 1), "day" => $day, "stops" => []];
+    $data->{$profileID}[$tripID]->days[] = ["title" => "Giorno-" . ($dayID + 1), "day" => $day, "stops" => []];
     saveFile($fileName, $data);
     echo json_encode(['day' => $day, 'dayID' => $dayID]);
     exit;
@@ -58,7 +58,7 @@ if(isset($_GET['method']) && $_GET['method'] == 'createStop'){
     $tripID = $_GET['tripID'];
     $dayID = $_GET['dayID'];
     $stopID = count($data->{$profileID}[$tripID]->days[$dayID]->stops);
-    $data->{$profileID}[$tripID]->days[$dayID]->stops[] = ["title" => "Stop-" . ($stopID + 1), "description" => null, "rating" => null, "images" => [], "coordinates" => []];
+    $data->{$profileID}[$tripID]->days[$dayID]->stops[] = ["title" => "Tappa-" . ($stopID + 1), "description" => null, "rating" => null, "images" => [], "coordinates" => []];
     saveFile($fileName, $data);
     echo json_encode(['stopID' => $stopID]);
     exit;
@@ -132,10 +132,31 @@ if(isset($_GET['method']) && $_GET['method'] == 'changeStopInfo'){
         $coordinates = explode('b', $_GET['newCoordinates'] , 2);
         if(isset($coordinates[0]) && is_numeric($coordinates[0]) && isset($coordinates[1]) && is_numeric($coordinates[1])){
             $data->{$profileID}[$tripID]->days[$dayID]->stops[$stopID]->coordinates = [$coordinates[0], $coordinates[1]];
+        }elseif($_GET['newCoordinates'] == 'b'){
+            $data->{$profileID}[$tripID]->days[$dayID]->stops[$stopID]->coordinates = [];
         }
     }
     saveFile($fileName, $data);
     echo json_encode(['result' => 'success']);
+    exit;
+}
+
+//deleteStop
+if(isset($_GET['method']) && $_GET['method'] == 'deleteStop'){
+    if(!isset($_GET['profileID']) || empty($_GET['profileID']) || !isset($_GET['tripID']) || !is_numeric($_GET['tripID']) || !isset($_GET['dayID']) || !is_numeric($_GET['dayID']) || !isset($_GET['stopID']) || !is_numeric($_GET['stopID'])){
+        echo json_encode(['error' => 'Missing profileID/tripID/dayID']);
+        exit;
+    }
+    $data = getFile($fileName);
+    $profileID = $_GET['profileID'];
+    $tripID = $_GET['tripID'];
+    $dayID = $_GET['dayID'];
+    $stopID = $_GET['stopID'];
+    unset($data->{$profileID}[$tripID]->days[$dayID]->stops[$stopID]);
+    $data->{$profileID}[$tripID]->days[$dayID]->stops = array_values($data->{$profileID}[$tripID]->days[$dayID]->stops);
+    saveFile($fileName, $data);
+    echo json_encode(['result' => 'success']);
+    
     exit;
 }
 
