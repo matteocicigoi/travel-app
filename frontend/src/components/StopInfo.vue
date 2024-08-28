@@ -22,9 +22,9 @@ export default {
         },
         getRating(i){
             if(i <= this.store.profile[this.store.tripID].days[this.store.dayID].stops[this.store.stopID].rating){
-                return 'x';
+                return '★';
             }else{
-                return 'o';
+                return '☆';
             }
         },
         setRating(i){
@@ -54,8 +54,8 @@ export default {
             class="form-control border-0 fs-5 fw-bold p-0 bg-transparent shadow-none mb-2 w-auto"
             aria-describedby="stop" placeholder="longitudine"
             v-model="store.profile[store.tripID].days[store.dayID].stops[store.stopID].coordinates[1]">
-        <ul>
-            <li v-for="i in 5" @click="setRating(i)" role="button">{{ getRating(i) }}</li>
+        <ul class="ps-0">
+            <li v-for="i in 5" @click="setRating(i)" role="button" class="list-unstyled d-inline h3">{{ getRating(i) }}</li>
         </ul>
     </div>
 </template>
