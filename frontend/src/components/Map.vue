@@ -25,8 +25,8 @@ export default {
     methods: {
         initializeMap() {
             this.map = L.map('map').setView([45.468, 9.186], 13);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(this.map);
 
             // make route
@@ -65,7 +65,6 @@ export default {
         removeWaypoint(index) {
             if (index >= 0 && index < this.waypoints.length) {
                 this.waypoints.splice(index, 1);
-
                 if (this.routingControl) {
                     this.routingControl.setWaypoints(this.waypoints.slice());
                 }

@@ -9,13 +9,12 @@ export default {
     data() {
         return {
             store,
-            tripName : store.profile[store.tripID].name,
             date: null
         }
     },
     methods: {
         renameTitle(){
-            this.$refs.api.renameTripTitle(this.store.profileID, this.store.tripID, this.tripName);
+            this.$refs.api.renameTripTitle(this.store.profileID, this.store.tripID, this.store.profile[store.tripID].name);
         },
         addDay(){
             this.$refs.api.createDay(this.store.profileID, this.store.tripID, this.date);
@@ -38,7 +37,7 @@ export default {
 
 <template>
     <Api ref="api"></Api>
-    <input @blur="renameTitle" type="text" class="form-control border-0 fs-2 fw-bold p-0 bg-transparent shadow-none mb-2" aria-describedby="name" placeholder="Nome" v-model="tripName">
+    <input @blur="renameTitle" type="text" class="form-control border-0 fs-2 fw-bold p-0 bg-transparent shadow-none mb-2" aria-describedby="name" placeholder="Nome" v-model="store.profile[store.tripID].name">
     <div class="days">
         <ul>
             <li v-for="(day, key) in store.profile[store.tripID].days" class="d-flex mb-1 align-items-center"><input @focus="setDay(key)" @blur="changeDay(key)" type="date" class="form-control border-0 fs-5 fw-bold p-0 bg-transparent shadow-none w-auto" aria-describedby="name" placeholder="Nome" v-model="day.day"></li>

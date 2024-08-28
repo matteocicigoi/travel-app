@@ -202,7 +202,11 @@ if(isset($_GET['method']) && $_GET['method'] == 'getProfile'){
     }
     $data = getFile($fileName);
     $profileID = $_GET['profileID'];
-    echo json_encode(['profile' => $data->{$profileID}]);
+    if(isset($data->{$profileID})){
+        echo json_encode(['profile' => $data->{$profileID}]);
+    }else{
+        echo json_encode(['error' => 'true']);
+    }
     exit;
 }
 
