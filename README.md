@@ -1,5 +1,4 @@
 # Esercizio: travel-app
-Host: https://mctravelhost.altervista.org/index.html
 ## Introduzione
 
 `travel-app` è un'applicazione di gestione viaggi che consente agli utenti di creare profili, pianificare viaggi, aggiungere giorni e tappe, e gestire dettagli come immagini e valutazioni.
